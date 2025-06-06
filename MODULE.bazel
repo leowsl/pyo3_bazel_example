@@ -1,0 +1,21 @@
+module(
+    name = "rust_pyo3",
+    version = "1.0",
+)
+
+bazel_dep(name = "rules_rust", version = "0.61.0")
+bazel_dep(name = "rules_python", version = "1.4.1")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    python_version = "3.11",
+)
+
+rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
+crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
+crate.from_cargo(
+    name = "crates",
+    cargo_lockfile = "//rust_lib:Cargo.lock",
+    manifests = ["//rust_lib:Cargo.toml"],
+)
+use_repo(crate, "crates")
