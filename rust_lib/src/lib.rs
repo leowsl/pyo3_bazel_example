@@ -3,9 +3,7 @@ use log;
 
 #[pyfunction]
 pub fn hello_world() -> PyResult<()> {
-    println!("Hello World from lib!");
-    log::info!("Hello World info!");
-    log::error!("Hello World error!");
+    log::info!("Hello World!");
     return PyResult::Ok(())
 }
 
