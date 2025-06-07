@@ -18,6 +18,8 @@ def pyo3_library(
         module_name: The name of the Python module
         visibility: The visibility of the Python library
     """
+    module_name = module_name or name
+
     rust_shared_library(
         name = name + "_lib",
         srcs = srcs,
@@ -28,7 +30,7 @@ def pyo3_library(
     copy_file(
         name = name + "_so",
         src = name + "_lib",
-        out = name + ".so",
+        out = module_name + ".so",
         allow_symlink = True,
         visibility = ["//visibility:private"],
     )
@@ -47,12 +49,11 @@ import os
 def load_so_module(path: str, module_name: str):
     spec = importlib.util.spec_from_file_location(module_name, path)
     if spec is None:
-        raise ImportError(f"Could not find module spec for {module_name}")
+        raise ImportError("Could not find module spec for" + module_name)
     module = importlib.util.module_from_spec(spec)
     if spec.loader is None:
-        raise ImportError(f"Module {module_name} has no loader")
+        raise ImportError("Module " + module_name + " has no loader")
     spec.loader.exec_module(module)
-    sys.modules[module_name] = module
 
 # Get the path to the .so file
 so_path = os.path.join(os.path.dirname(__file__), "{so_file}")
@@ -60,7 +61,7 @@ load_so_module(so_path, "{module_name}")
 import {module_name}
 EOF
         """.format(
-            so_file = name + ".so",
+            so_file = module_name + ".so",
             module_name = module_name,
         ),
     )

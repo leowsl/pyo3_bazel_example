@@ -14,11 +14,10 @@ python.toolchain(
 bazel_dep(name = "rules_rust", version = "0.61.0")
 rust = use_extension("@rules_rust//rust:extensions.bzl", "rust")
 crate = use_extension("@rules_rust//crate_universe:extensions.bzl", "crate")
-crate.from_cargo(
-    name = "crates",
-    cargo_lockfile = "//rust_lib:Cargo.lock",
-    manifests = ["//rust_lib:Cargo.toml"],
-)
+crate.spec(package = "pyo3", version = "0.25.0", features = ["extension-module", "abi3", "abi3-py311"])
+crate.spec(package = "log", version = "0.4.27")
+crate.spec(package = "pyo3-log", version = "0.12.4")
+crate.from_specs()
 use_repo(crate, "crates")
 
 # Skylib for copy_file rule
