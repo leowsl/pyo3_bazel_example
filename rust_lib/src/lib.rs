@@ -1,17 +1,17 @@
 use pyo3::prelude::*;
-
 use log;
-use env_logger;
 
 #[pyfunction]
 pub fn hello_world() -> PyResult<()> {
-    env_logger::init();
-    log::info!("Hello World from lib!");
+    println!("Hello World from lib!");
+    log::info!("Hello World info!");
+    log::error!("Hello World error!");
     return PyResult::Ok(())
 }
 
 #[pymodule]
-pub fn rust_module(m: &Bound<'_, PyModule>) -> PyResult<()> {
+pub fn rust_lib(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    pyo3_log::init();
     m.add_function(wrap_pyfunction!(hello_world, m)?)?;
     return PyResult::Ok(())
 }
