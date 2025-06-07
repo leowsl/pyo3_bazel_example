@@ -1,18 +1,11 @@
-load("@rules_rust//rust:defs.bzl", "rust_shared_library")
-load("@rules_rust//rust:defs.bzl", "rust_binary")
 load("@crates//:defs.bzl", "all_crate_deps")
+load("//extensions:pyo3_rules.bzl", "pyo3_library")
 
-rust_shared_library(
-    name = "rust_module_lib",
+
+pyo3_library(
+    name = "rust_module",
     srcs = ["src/lib.rs"],
     deps = all_crate_deps(),
-    visibility = ["//visibility:private"],
-)
-
-genrule(
-    name = "rust_module",
-    srcs = [":rust_module_lib"],
-    outs = ["rust_module.so"],
+    module_name = "RustModule",
     visibility = ["//visibility:public"],
-    cmd = "cp $< $@",
-)   
+)

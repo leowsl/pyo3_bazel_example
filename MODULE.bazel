@@ -19,5 +19,8 @@ crate.from_cargo(
     cargo_lockfile = "//rust_lib:Cargo.lock",
     manifests = ["//rust_lib:Cargo.toml"],
 )
-
 use_repo(crate, "crates")
+
+# Skylib for copy_file rule
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+
