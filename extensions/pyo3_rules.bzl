@@ -20,7 +20,8 @@ def pyo3_library(
     rust_shared_library(
         name = name + "_lib",
         srcs = srcs,
-        deps = deps,
+        # Make sure pyo3 is in a dependency
+        deps = deps + (["@crates//:pyo3"] if "@crates//:pyo3" not in deps else []),
     )
 
     # Symlink for shared library
