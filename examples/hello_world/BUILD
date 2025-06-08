@@ -10,7 +10,6 @@ pyo3_library(
         "@crates//:log",
         "@crates//:pyo3-log",
     ],
-    visibility = ["//visibility:public"],
 )
 
 py_binary(
