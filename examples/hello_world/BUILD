@@ -1,13 +1,20 @@
 load("//extensions:pyo3_rules.bzl", "pyo3_library")
+load("@rules_python//python:defs.bzl", "py_binary")
 
 pyo3_library(
     name = "rust_module",
-    srcs = ["src/lib.rs"],
+    module_name = "RustModule",
+    srcs = ["lib.rs"],
     deps = [
         "@crates//:pyo3",
         "@crates//:log",
         "@crates//:pyo3-log",
     ],
-    module_name = "RustModule",
     visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "main",
+    srcs = ["main.py"],
+    deps = [":rust_module"]
 )

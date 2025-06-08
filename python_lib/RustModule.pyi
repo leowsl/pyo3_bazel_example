@@ -1,1 +1,0 @@
-def hello_world() -> int: "Hello World from lib!"
